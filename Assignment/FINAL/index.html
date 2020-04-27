@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File dialog</title>
+    <script src="RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="RGraph/libraries/RGraph.bar.js"></script>
+    <script src="RGraph/libraries/RGraph.common.dynamic.js"></script>
+    <script src="RGraph/libraries/RGraph.common.tooltips.js"></script>
+    
+    </head>    
+    <body>
+        
+    <form name="easyform" method="get" action="#">
+    Upload file<input type="file" name="file_upload" id="file_upload" onChange="readFile();">
+    </form>
+    
+    <div style="padding: 15px">
+    <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+</div>
+    
+        
+        <script type ="text/javascript">   
+
+                   
+                var count = []
+                var labels = []
+                var alphabets = "abcdefghijklmnopqrstuvwxyz"
+    
+        function readFile(){
+            // alert("File selected");
+            var file = document.getElementById("file_upload").files[0]
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function(evt) {
+                //Reading file content
+                    var string = evt.target.result;
+                    //alert(string);
+                    //processing
+                    var new_string = string.replace(/[^A-Z]/gi, "")
+                    //taking only alpha characters from the text file.
+                    //alert(new_string);
+                    
+                    var final_string = new_string.toLowerCase();
+                    //converting to lowercase
+                    console.log(final_string);
+
+                    var str_length=final_string.length;
+
+                    //alert(str_length);
+
+
+
+                    var chars = final_string;
+                    //splitting the new_atring
+                    
+                
+                    var count = []
+                    var labels = []
+                    var alphabets = "abcdefghijklmnopqrstuvwxyz"
+                    //alert(alphabets);
+
+                    for(var i=0; i<chars.length;i++){                    
+                        for(var j=0; j<alphabets.length;j++){
+                            if(chars[i] == alphabets[j]) {
+                                if(count[j]) count[j]++;
+                                else {
+                                    count[j] = 1;
+                                    labels[j] = alphabets[j];
+                                }
+                            }
+                                            
+                        }
+                    }
+                    
+                    console.log(count);
+                    console.log(labels);
+                    
+                    for(var k=0;k<labels.length;k++){
+                        console.log(labels[k]);
+                        if (labels[k] == undefined){
+                            labels.splice(k,1);
+                            count.splice(k,1);
+                            k--;
+                        }
+                    }
+                    console.log(labels);
+             
+                    
+                
+                    
+                    /*for(var i=0;i<count.length-1;i++){
+                        for(var j=0;j<count.length-1;j++){
+                            var tempCount = count[j]
+                            if count[j] = count[j+1]
+                                
+                            
+                        }
+                    }*/
+                    
+                    
+                        
+                            
+                 
+            
+                    var bar = new RGraph.Bar({
+                    id: 'cvs',
+                    data: count,
+                    options: {
+                        textAccessible: true,
+                        gutterTop: 35,
+                        gutterLeft: 35,
+                        title: 'Letter Counter',
+                        labels: labels,
+                        colors: ["blue"],
+                        tooltips: [1,2,3,4]
+                        
+                        }                        
+                    
+                    }).draw();
+                    
+                    
+                    
+                    
+                    
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                
+            }
+            
+            
+        }
+        
+            
+           
+    
+        
+    </script>
+        
+   
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>File dialog</title>
+    <script src="RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="RGraph/libraries/RGraph.bar.js"></script>
+    <script src="RGraph/libraries/RGraph.common.dynamic.js"></script>
+    <script src="RGraph/libraries/RGraph.common.tooltips.js"></script>
+        
+            
+</head> 
+    
+<body>
+        
+    <form name="easyform" method="get" action="#">
+    Upload file<input type="file" name="file_upload" id="file_upload" onChange="readFile();">
+    </form>
+    
+    <div style="padding: 15px">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <button onclick="RGraph.Clear(document.getElementById('cvs'));">Clear the canvas</button> 
+    <button onclick="RGraph.Reset(document.getElementById('cvs'));sortBar();">Sort the chart</button>
+        
+    
+    <script type ="text/javascript">  
+        
+        /* Creating global variables to hold count and labels.
+           Creating a string of alphabets. */
+        
+        var count = [];
+        var labels = [];
+        var alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        
+        
+        /* This function allows the user to browse and load a file.
+           The scope of the function goes to the end of the code until the default bar chart is created.
+           The text from the loaded file is assigned to the variable 'string'. */
+
+        function readFile(){
+            // alert("File selected");
+            var file = document.getElementById("file_upload").files[0]
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function(evt) {
+                //Reading file content
+                    var string = evt.target.result;
+                    //alert(string);
+                    //processing
+                    
+                    // Using the 'replace' method to take only the alphabets in the text file.
+                    var newString = string.replace(/[^A-Z]/gi, "")
+                    //alert(new_string);
+                    
+                    // Converting to uppercase to count the frequency of each letter while ignoring their 'case'.
+                    var chars = newString.toUpperCase();
+                    console.log(chars);                 
+
+
+                    /*for(var i=0; i<chars.length;i++)
+                    {                    
+                        for(var j=0; j<alphabets.length;j++)
+                        {
+                            if(chars[i] == alphabets[j]) 
+                            {
+                                if(count[j]) count[j]++;
+                                else 
+                                {
+                                    count[j] = 1;
+                                    labels[j] = alphabets[j];
+                                }
+                            }
+                                            
+                        }
+                    } */
+                    
+                    
+                    //var count = [];
+                    //var alphabets = [];
+                    for(var j=0; j<alphabets.length;j++)
+                    {
+                        for(var i=0; i<chars.length;i++)
+                        {                    
+                            if(chars[i] == alphabets[j]) 
+                            {
+                                if(count[j]) count[j]++;
+                                else 
+                                {
+                                    count[j] = 1;//
+                                    labels[j] = alphabets[j];
+                                }
+                                console.log(count);
+                                console.log(labels);
+                            }
+                                            
+                        }
+                    }
+                    
+                    console.log(count);
+                    
+                    console.log(labels);
+                    
+                    
+                    for(var k=0;k<labels.length;k++){
+                        console.log(labels[k]);
+                        if (labels[k] == undefined){
+                            labels.splice(k,1);
+                            count.splice(k,1);
+                            k--;
+                        }
+                    }
+                    
+                    
+                    console.log(labels);
+                    alert(count);
+                    alert(labels);
+                    
+                    var tool_count = count.toString();
+                    alert(tool_count[4]);
+                    
+                    
+                    
+                    var total_count = [];
+                    
+                    for(var i=0;i<tool_count.length;i++) 
+                    {
+                        total_count[i] == "+tool_count[i]+"
+                    
+                    }
+                    
+                        //alert(total_count[]);
+                                        
+                    
+                    
+                    //new method               
+                            
+                 //Bar Chart code
+            
+                    var bar = new RGraph.Bar({
+                    id: 'cvs',
+                    data: count,
+                    options: {
+                        textAccessible: true,
+                        gutterTop: 35,
+                        gutterLeft: 35,
+                        title: 'Frequency Counter',
+                        labels: labels,
+                        colors: ["blue"],
+                        tooltips: tool_count.toString().split(","),
+                        tooltipsEvent: 'mousemove'
+                        
+                        }                        
+                    
+                    }).draw();
+                     
+                    
+                }
+                
+            }
+            
+            
+        }
+            
+            //Sorting the bar chart in a descending order(Highest frequency of characters to the lowest frequency)
+            
+            function sortBar(){       
+                    
+                    var array1 = count,  
+                        array2 = labels,
+                        zipped = [],
+                        i;
+
+                    for(i=0; i<array1.length; ++i) {
+                        zipped.push({
+                            array1elem: array1[i],
+                            array2elem: array2[i]
+                        });
+                    }
+
+                    zipped.sort(function(left, right) {
+                        var leftArray1elem = left.array1elem,
+                            rightArray1elem = right.array1elem;
+
+                        return leftArray1elem === rightArray1elem ? 0 : (leftArray1elem > rightArray1elem ? -1 : 1);
+                        
+                        /*
+                        if(leftArray1elem === rightArray1elem)
+                            return 0;
+                        else if (leftArray1elem > rightArray1elem)
+                            return -1;
+                        else
+                            return 1;
+                            */
+                    });
+
+                    array1 = [];
+                    array2 = [];
+                    for(i=0; i<zipped.length; ++i) {
+                        array1.push(zipped[i].array1elem);
+                        array2.push(zipped[i].array2elem);
+                    }
+                       
+                        alert('Sorted arrays:\n\narray1: ' + array1 + '\n\narray2: ' + array2);
+                        console.log(array1, array2);
+                
+                                   
+                        
+                        
+                        var bar = new RGraph.Bar({
+                            id: 'cvs',
+                            data: array1,
+                            options: {
+                            textAccessible: true,
+                            gutterTop: 35,
+                            gutterLeft: 35,
+                            title: 'Frequency Counter',
+                            labels: array2,
+                            colors: ["blue"],
+                            tooltips: array1.toString().split(","),
+                            tooltipsEvent: 'mousemove'
+
+                        }                        
+                    
+                    }).draw();
+                    
+                    
+                        
+                    }
+
+        
+            
+           
+    
+        
+    </script>
+        
+   
+</body>
+</html>

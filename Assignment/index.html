@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File dialog</title>
+    <script src="RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="RGraph/libraries/RGraph.bar.js"></script>
+    
+    
+    
+    <script src="program.js"> </script>
+    
+    <script type ="text/javascript">        
+    
+        function readFile(){
+            // alert("File selected");
+            var file = document.getElementById("file_upload").files[0]
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function(evt) {
+                //Reading file content
+                    var string = evt.target.result;
+                    alert(string);
+                    //processing
+                    
+                    var str_length=string.length;
+                    
+                    alert(str_length);
+                    
+                    for(var j=0; j<str_length; j++)
+                        {
+                            
+                        }
+                    
+                    var chars = string.split("");
+                    
+                    var a=0;
+                    alert(chars);
+                    for(var i=0; i<str_length;i++)
+                        {
+                            if(chars[i]==="a" || chars[i]==="A")
+                                a++;
+                        }
+                    
+                    alert(a);
+                    
+                    
+                /*   var letters_count = {};
+
+                    for(var i = 0; i < chars.length;i++)
+                        {
+                            if(letters_count[chars[i]] == undefined)
+                                letters_count[chars[i]] = 0;
+                            letters_count[chars[i]]++;
+                        }
+                    for(var i in letters_count)
+                        {
+                          console.log(i + ' ' + letters_count[i]);  
+                        }*/
+                    
+                    
+                }
+            }
+        }
+        
+    
+    </script>
+</head>
+    
+<body>
+    <form name="easyform" method="get" action="#">
+    Upload file<input type="file" name="file_upload" id="file_upload" onChange="readFile();">
+    </form>
+    
+    
+    <canvas id="cvs" width="600" height="250">
+    [No canvas support]
+    </canvas>
+
+    
+    <script>
+       
+        
+    window.onload = function ()
+    {
+        var bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [1],
+            options: {
+                textAccessible: true,
+                gutterTop: 35,
+                gutterLeft: 35,
+                title: 'Letter counter',
+                labels: ['A']
+            }
+        }).draw();
+    };
+    </script>
+</body>
+</html>

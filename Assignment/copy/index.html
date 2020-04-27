@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File dialog</title>
+    <script src="RGraph/libraries/RGraph.common.core.js"></script>
+    <script src="RGraph/libraries/RGraph.bar.js"></script>
+    
+    </head>    
+    <body>
+        
+    <form name="easyform" method="get" action="#">
+    Upload file<input type="file" name="file_upload" id="file_upload" onChange="readFile();">
+    </form>
+    
+    <canvas id="cvs" width="600" height="250">
+    [No canvas support]
+    </canvas>
+    
+        
+        <script type ="text/javascript">   
+
+        var a=0,b=0,c=0,d=0;
+    
+        function readFile(){
+            // alert("File selected");
+            var file = document.getElementById("file_upload").files[0]
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function(evt) {
+                //Reading file content
+                    var string = evt.target.result;
+                    alert(string);
+                    //processing
+                    var new_string = string.replace(/[^A-Z]/gi, "")
+                    //taking only alpha characters from the text file.
+                    alert(new_string);
+                    
+                    var final_string = new_string.toLowerCase();
+                    //converting to lowercase
+                    alert(final_string);
+                    
+                    var str_length=final_string.length;
+                    
+                    alert(str_length);
+                    
+                    
+                    
+                    var chars = final_string.split("");
+                    //splitting the new_atring into an array of individual characters.
+                    
+                    
+                    
+                    
+                    alert(chars);
+                    for(var i=0; i<str_length;i++)
+                        {
+                                                    
+                            if(chars[i]==="a" || chars[i]==="A")
+                                a++;
+                        
+                            if(chars[i]==="b" || chars[i]==="B")
+                                b++;
+                            
+                            if(chars[i]==="c" || chars[i]==="C")
+                                c++;
+                        
+                            if(chars[i]==="d" || chars[i]==="D")
+                                d++;
+                        
+                            
+                        }
+            
+                    
+                    var bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [a,b,c,d],
+            options: {
+                textAccessible: true,
+                gutterTop: 35,
+                gutterLeft: 35,
+                title: 'A basic chart',
+                labels: ['A','B','C','D']
+            }
+        }).draw();
+                }
+                
+            }
+            
+            
+        }
+        
+            
+           // window.onload = function ()
+    
+        
+    </script>
+        
+   
+</body>
+</html>
